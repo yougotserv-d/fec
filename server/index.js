@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const colors = require('colors');
 const axios = require('axios');
+const getReviews = require('../../SDC/db/getReviews');
 
 const GITHUB_TOKEN = require('../config');
 
@@ -18,6 +19,8 @@ app.listen(3000);
 app.get('/favicon.ico', () => {
 
 });
+
+app.get('/reviews', getReviews);
 
 app.all('/*', (async (req, res) => {
   console.log(`${req.method} request on ${req.url}`.yellow);
