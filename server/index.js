@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const colors = require('colors');
 const axios = require('axios');
-const getReviews = require('../../SDC/db/getReviews');
+const getReviews = require('../../SDC/db/getreviews');
 
 const GITHUB_TOKEN = require('../config');
 
@@ -20,7 +20,45 @@ app.get('/favicon.ico', () => {
 
 });
 
-app.get('/reviews', getReviews);
+// app.get('/reviews/*', ((req, res) => {
+//   console.log(`url endpoint ${req.url}`);
+//   // axios.get(``)
+//   axios.get(`http://54.245.141.38${req.url}`)
+//     .then(response => res.send(response.data))
+//     .catch(err => {
+//       console.log(err);
+//       res.sendStatus(404);
+//     });
+// }));
+
+app.all('/reviews', (req, res) => {
+  // console.log(req);
+  const options = {
+    method: req.method,
+    url: `http://54.245.141.38${req.url}`,
+    data: req.body,
+  };
+  axios(options)
+    .then(response => res.send(response.data))
+    .catch(err => {
+      console.log(err);
+      res.sendStatus(404);
+    });
+});
+app.all('/reviews/*', (req, res) => {
+  // console.log(req);
+  const options = {
+    method: req.method,
+    url: `http://54.245.141.38${req.url}`,
+    data: req.body,
+  };
+  axios(options)
+    .then(response => res.send(response.data))
+    .catch(err => {
+      console.log(err);
+      res.sendStatus(404);
+    });
+});
 
 app.all('/*', (async (req, res) => {
   console.log(`${req.method} request on ${req.url}`.yellow);
